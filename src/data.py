@@ -1,0 +1,12 @@
+import pandas as pd
+
+def load_data(path='../data/raw/german.data'):
+  columns = [
+    'checking_status', 'duration', 'credit_history', 'purpose', 
+    'credit_amount', 'savings_status', 'employment', 'installment_rate',
+    'personal_status', 'other_parties', 'residence_since', 'property',
+    'age', 'other_payment_plans', 'housing', 'existing_credits',
+    'job', 'num_dependents', 'telephone', 'foreign_worker', 'class'
+  ]
+  df = pd.read_csv(path, sep=' ', header=None, names=columns)
+  return df
