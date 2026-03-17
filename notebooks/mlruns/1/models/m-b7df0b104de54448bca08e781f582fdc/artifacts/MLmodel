@@ -1,4 +1,4 @@
-artifact_path: /home/purshotam_kumar/ml_projects/credit-risk-prediction/notebooks/mlruns/1/models/m-e93195bd55b44b46a0f948106c192909/artifacts
+artifact_path: /home/purshotam_kumar/ml_projects/credit-risk-prediction/notebooks/mlruns/1/models/m-b7df0b104de54448bca08e781f582fdc/artifacts
 flavors:
   python_function:
     env:
@@ -15,9 +15,9 @@ flavors:
     sklearn_version: 1.8.0
     skops_trusted_types: null
 mlflow_version: 3.10.1
-model_id: m-e93195bd55b44b46a0f948106c192909
-model_size_bytes: 217841
-model_uuid: m-e93195bd55b44b46a0f948106c192909
+model_id: m-b7df0b104de54448bca08e781f582fdc
+model_size_bytes: 3401685
+model_uuid: m-b7df0b104de54448bca08e781f582fdc
 prompts: null
-run_id: 8ea9738ac8ef4bd9b73962859f3a7cbb
-utc_time_created: '2026-03-16 07:51:09.952235'
+run_id: 7d4b3fe25fb64e2a94bf48ad8cb4f621
+utc_time_created: '2026-03-17 10:39:03.169210'
