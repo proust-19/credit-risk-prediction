@@ -1,0 +1,10 @@
+{
+  "model_path": "models/xgb_final.pkl",
+  "threshold": 0.35,
+  "n_estimators": 100,
+  "f1_score": 0.6984,
+  "roc_auc": 0.8275,
+  "false_negatives": 15,
+  "false_positives": 23,
+  "recall_bad_credit": 0.7458
+}
