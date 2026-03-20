@@ -1,0 +1,75 @@
+# Python cache and build artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+site/
+build/
+dist/
+.eggs/
+*.egg
+*.egg-info/
+pip-wheel-metadata/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment and local settings
+.env
+.env.*
+*.env
+.python-version
+
+# Jupyter
+.ipynb_checkpoints/
+
+# MLflow
+mlruns/
+mlflow.db
+notebooks/mlruns/
+notebooks/mlflow.db
+
+# Data artifacts
+data/processed/
+*.csv
+*.parquet
+*.feather
+
+# Model artifacts
+models/*.pkl
+models/*.joblib
+models/*.bin
+models/*.pt
+models/*.h5
+models/*.onnx
+
+# Keep lightweight repo assets
+!models/*.json
+!models/*.png
+
+# Logs
+*.log
+logs/
+
+# IDE/editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

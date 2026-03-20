@@ -2,9 +2,9 @@
 
 ## Feature Engineering Summary
 - Input: 1000 samples, 20 raw features
-- Output: 33 engineered features after encoding + new features
-- Train/Test split: 800/200 (80/20, stratified)
-- SMOTE applied: Train set balanced to 559/559 (class 0 / class 1)
+- Output: 33 model features after encoding (`34` columns including target)
+- Train/Test split: 800/200 (80/20)
+- No SMOTE used in the final baseline modeling notebook
 
 ## Engineered Features
 
@@ -35,51 +35,53 @@
 
 | Model               | F1 Score | ROC-AUC | Accuracy | Precision (bad) | Recall (bad) |
 |---------------------|----------|---------|----------|-----------------|--------------|
-| Logistic Regression | 0.5763   | 0.7813  | 75%      | 0.58            | 0.58         |
-| Random Forest       | 0.6126   | **0.8339**  | 79%      | 0.65            | 0.58         |
-| **XGBoost**         | **0.6727** | 0.8275 | **82%** | **0.73**     | **0.63**     |
+| Logistic Regression | 0.6111   | 0.8096  | 79%      | 0.67            | 0.58         |
+| Random Forest       | 0.5600   | **0.8211** | 78%      | **0.68**        | 0.47         |
+| XGBoost             | **0.5946**   | 0.8077  | 78%      | 0.63            | 0.56         |
 
 ### Confusion Matrices
 
 **Logistic Regression:**
-- True Negatives: 116, False Positives: 25
-- False Negatives: 25, True Positives: 34
+- True Negatives: 125, False Positives: 16
+- False Negatives: 26, True Positives: 33
 
 **Random Forest:**
-- True Negatives: 123, False Positives: 18
-- False Negatives: 25, True Positives: 34
+- True Negatives: 128, False Positives: 13
+- False Negatives: 31, True Positives: 28
 
 **XGBoost:**
-- True Negatives: 127, False Positives: 14(rejecting good loans)
-- False Negatives: 22, True Positives: 37
+- True Negatives: 122, False Positives: 19
+- False Negatives: 26, True Positives: 33
 
-## Best Model: XGBoost
 
-**Why XGBoost wins:**
-- Highest F1 score (0.6727) — best balance of precision and recall
-- Highest accuracy (82%)
-- Fewest false negatives (22) — approving bad loans is costly. So, we use efficient model of approving 22 bad loans rather than 25 bad loans.
-- Fewest false positives (14) — rejecting good loans  is also unaffordable.
-- Highest precision on bad credit class (73%) — fewer false alarms
+## Why XGBoost Was Selected for Tuning
 
-**Why not Random Forest:**
-- Highest ROC-AUC (0.8339) but lower F1 and more false positives (18 vs 14)
-- Less reliable at the default threshold
+At baseline, all three models performed similarly (F1: 0.56-0.61).
 
-**Why not Logistic Regression:**
-- Didn't converge fully (lbfgs hit 1000 iteration limit)
-- Weakest on all metrics — linear boundary not sufficient for this dataset
+- XGBoost was selected because:
+1. Tunable — hyperparameter space is large, Optuna can extract significantly more performance
+2. Handles non-linear feature interactions — financial risk patterns are rarely linear
+3. Native scale_pos_weight — handles class imbalance without SMOTE
+
+- Logistic Regression was competitive at baseline (best F1: 0.6111)
+but has limited capacity for improvement without feature 
+transformations. Random Forest had the best ROC-AUC but worst 
+recall — not acceptable for credit risk.
+
+- Decision validated: tuned XGBoost reached F1 0.6752 and 
+recall 0.90, catching 53 of 59 defaulters.
 
 ## Key Insights
 
 - **overall_stability is the most powerful feature**: 50% default spread confirms that combining financial + employment stability is highly predictive
-- **XGBoost handles class imbalance better** than linear models even after SMOTE
-- **Recall on bad credit (0.63) is still low** — we're missing 37% of actual defaulters. This is the main problem to fix in Week 3
-- **Business cost perspective**: False negatives (approving bad loans) are more expensive than false positives (rejecting good applicants). Threshold tuning in Week 3 should shift toward higher recall
+- **The notebook did not use SMOTE**: these baseline results come from the original class distribution
+- **Recall on bad credit is still low across all models**: even the best recall here is 0.56, so 44% of actual defaulters are still missed
+- **Business cost perspective**: False negatives (approving bad loans) are more expensive than false positives (rejecting good applicants).   Threshold tuning in Week 3 should shift toward higher recall
 
 ## What to Optimize in Week 3
 
-- **Hyperparameter tuning on XGBoost**: max_depth, learning_rate, n_estimators, subsample, min_child_weight
-- **Threshold tuning**: Lower decision threshold to improve recall on bad credit class (reduce false negatives)
-- **Cost-sensitive evaluation**: Weight FN errors higher than FP errors
-- **SHAP analysis**: Confirm which features are actually driving XGBoost predictions
+1. **Re-check whether XGBoost is worth tuning further**: current baseline does not beat Logistic Regression on F1
+2. **Threshold tuning**: Lower decision threshold to improve recall on bad credit class (reduce false negatives)
+3. **Cost-sensitive evaluation**: Weight FN errors higher than FP errors
+
+4. **SHAP analysis**: Confirm which features are actually driving the tree-based models

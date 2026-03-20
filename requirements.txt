@@ -4,3 +4,7 @@ joblib
 scikit-learn
 xgboost
 mlflow
+optuna
+matplotlib
+seaborn
+shap
