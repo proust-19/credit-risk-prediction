@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 import joblib
 from pathlib import Path
-from schemas import LoanApplication
-from utils import preprocess_input
+from api.schemas import LoanApplication
+from api.utils import preprocess_input
 
 app = FastAPI()
 
